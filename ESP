@@ -1,4 +1,10 @@
-for i, v in pairs(players:GetPlayers()) do
+local player = game.Players.LocalPlayer
+local players = game:GetService("Players")
+
+local espon = false
+
+function addhighlight()
+    for i, v in pairs(players:GetPlayers()) do
         local char = v.Character or v.CharacterAdded:Wait()
         if v == player or char:FindFirstChild("Esp Highlight") then continue end
 
@@ -57,5 +63,11 @@ uis.InputBegan:Connect(function(input, gameprocessevent)
             removehighlight()
             espon = false
         end
+    end
+end)
+
+game.Players.PlayerAdded:Connect(function()
+    if espon then
+        addhighlight()
     end
 end)
