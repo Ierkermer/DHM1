@@ -1,0 +1,48 @@
+local player = game.Players.LocalPlayer
+local players = game:GetService("Players")
+
+function addhighlight()
+    for i, v in pairs(players:GetPlayers()) do
+        local char = v.Character or v.CharacterAdded:Wait()
+        if v == player and not char:FindFirstChild("Esp Highlight") then continue end
+
+        local a = Instance.new("BillboardGui", char)
+        a.Size = UDim2.new(5, 0, 3, 0)
+        a.Name = "A"
+        a.AlwaysOnTop = true
+        a.SizeOffset = Vector2.new(0, 1)
+        local c = Instance.new("TextLabel", a)
+        c.Text = v.Name
+        c.Font = Enum.Font.Gotham
+        c.Size = UDim2.new(1, 0, 1, 0)
+        c.TextScaled = true
+        c.BackgroundTransparency = 1
+        c.BorderSizePixel = 0
+
+        local highlight = Instance.new("Highlight", char)
+        if v.Team then
+            highlight.FillColor = v.TeamColor.Color
+            c.TextColor3 = v.TeamColor.Color
+        else
+            highlight.FillColor = Color3.fromRGB(255, 0, 0)
+            c.TextColor3 = Color3.fromRGB(255, 255, 255)
+        end
+
+        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        highlight.FillTransparency = 0
+        highlight.OutlineTransparency = 0
+        highlight.Name = "Esp Highlight"
+
+        task.spawn(function()
+            char:WaitForChild("Humanoid").Died:Connect(function()
+                highlight:Destroy()
+                addhighlight()
+            end)
+        end)
+    end
+end
+
+game.Players.PlayerAdded:Connect(function() addhighlight() end)
+
+addhighlight()
