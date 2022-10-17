@@ -2,7 +2,7 @@ while wait() do
     pcall(function()
         if game:GetService("Players").LocalPlayer.Character:FindFirstChild("I_LOADED_I"):FindFirstChild("K.O").Value == true then
             for i, v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
-     player.Character:BreakJoints()
+     game.Players.LocalPlayer.Character["I_LOADED_I"]["K.O"].Parent = nil 
                 end
             end
         end
